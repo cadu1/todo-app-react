@@ -4,5 +4,5 @@ import App from './main/app'
 
 ReactDOM.render(
     <App />,
-    document.querySelector('data-app[react]')
+    document.querySelector('[data-app="react"]')
 )
