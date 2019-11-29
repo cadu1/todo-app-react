@@ -17,6 +17,7 @@ export default class Todo extends Component {
         this.handlerRemove = this.handlerRemove.bind(this)
         this.handlerMarkAsDone = this.handlerMarkAsDone.bind(this)
         this.handlerMarkAsPending = this.handlerMarkAsPending.bind(this)
+        this.handlerSearch = this.handlerSearch.bind(this)
         this.refreshList = this.refreshList.bind(this)
 
         this.refreshList()
@@ -34,34 +35,39 @@ export default class Todo extends Component {
 
     handlerRemove(todo) {
         axios.delete(`${url}/${todo._id}`)
-            .then(resp => this.refreshList())
+            .then(resp => this.refreshList(this.state.description))
     }
 
     handlerMarkAsDone(todo) {
         axios.put(`${url}/${todo._id}`, { ...todo, done: true })
-            .then(resp => this.refreshList())
+            .then(resp => this.refreshList(this.state.description))
     }
 
     handlerMarkAsPending(todo) {
         axios.put(`${url}/${todo._id}`, { ...todo, done: false })
-            .then(resp => this.refreshList())
+            .then(resp => this.refreshList(this.state.description))
     }
 
-    handlerRemove(todo) {
-        axios.delete(`${url}/${todo._id}`)
-            .then(resp => this.refreshList())
+    handlerSearch() {
+        this.refreshList(this.state.description)
     }
 
-    refreshList() {
-        axios.get(`${url}?sort=-createdAt`)
-            .then(resp => this.setState({...this.state, description: '', list: resp.data}))
+    refreshList(description = '') {
+        const search = description ? `&description__regex=/${description}/` : ''
+        axios.get(`${url}?sort=-createdAt${search}`)
+            .then(resp => this.setState({...this.state, description, list: resp.data}))
     }
 
     render() {
         return (
             <div>
                 <PageHeader name='Tarefas' small='Cadastro' />
-                <Form handlerAdd={this.handlerAdd} description={this.state.description} handlerChange={this.handlerChange} />
+                <Form
+                    handlerAdd={this.handlerAdd}
+                    description={this.state.description}
+                    handlerChange={this.handlerChange}
+                    handlerSearch={this.handlerSearch}
+                    />
                 <List
                     list={this.state.list}
                     handlerRemove={this.handlerRemove}
