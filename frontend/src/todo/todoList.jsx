@@ -5,11 +5,22 @@ export default props => {
     const renderRow = () => {
         const list = props.list || []
         return list.map(todo => (
-            <tr key={todo._id}>
+            <tr key={todo._id} className={todo.done ? 'task-done' : ''}>
                 <td>{todo.description}</td>
                 <td>
-                    <Button style='danger' icon='trash-o'
-                        onClick={() => props.handlerRemove(todo)} />
+                    <Button
+                        style='success'
+                        icon='check'
+                        onClick={() => props.handlerMarkAsDone(todo)}
+                        hide={todo.done}
+                        />
+                    <Button
+                        style='warning'
+                        icon='undo'
+                        onClick={() => props.handlerMarkAsPending(todo)}
+                        hide={!todo.done}
+                        />
+                    <Button style='danger' icon='trash-o' onClick={() => props.handlerRemove(todo)} />
                 </td>
             </tr>
         ))
