@@ -18,6 +18,7 @@ export default class Todo extends Component {
         this.handlerMarkAsDone = this.handlerMarkAsDone.bind(this)
         this.handlerMarkAsPending = this.handlerMarkAsPending.bind(this)
         this.handlerSearch = this.handlerSearch.bind(this)
+        this.handlerClear = this.handlerClear.bind(this)
         this.refreshList = this.refreshList.bind(this)
 
         this.refreshList()
@@ -52,6 +53,11 @@ export default class Todo extends Component {
         this.refreshList(this.state.description)
     }
 
+    handlerClear() {
+        this.setState({description: ''});
+        this.refreshList()
+    }
+
     refreshList(description = '') {
         const search = description ? `&description__regex=/${description}/` : ''
         axios.get(`${url}?sort=-createdAt${search}`)
@@ -67,6 +73,7 @@ export default class Todo extends Component {
                     description={this.state.description}
                     handlerChange={this.handlerChange}
                     handlerSearch={this.handlerSearch}
+                    handlerClear={this.handlerClear}
                     />
                 <List
                     list={this.state.list}
