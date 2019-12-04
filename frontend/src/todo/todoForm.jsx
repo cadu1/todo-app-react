@@ -38,7 +38,7 @@ class TodoForm extends Component {
                 </Grid>
                 <Grid cols='12 3 2'>
                     <Button style='primary' icon='plus' onClick={() => add(description)} />
-                    <Button style='info' icon='search' onClick={() => search()} />
+                    <Button style='info' icon='search' onClick={ search } />
                     <Button style='default' icon='remove' onClick={this.props.clear} />
                 </Grid>
             </div>
